@@ -5,6 +5,5 @@ export default async function Post({params, translated}) {
 	const supabase = createServerComponentClient({cookies});
 	const {data} = await supabase.from('posts').select('*, user:users(username)').eq('id', params.post);
 	const post = data[0];
-	// generateMetadata(`${post.user.username} ${translated}: ${post.content}`);
 	return <div>post</div>;
 }
