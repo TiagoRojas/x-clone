@@ -9,8 +9,8 @@ export default async function Home(params) {
 	return (
 		<main className="">
 			<article className="border-x lg:w-[600px] w-full min-h-full">
-				<NewUserPost />
-				<Posts params={params} />
+				{/* <NewUserPost /> */}
+				{/* <Posts params={params} /> */}
 			</article>
 		</main>
 	);
