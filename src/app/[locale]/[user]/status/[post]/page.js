@@ -1,4 +1,4 @@
-import Post from '@/app/components/post';
+import Post from '@/app/components/post-status';
 
 export default function PostStatus({params}) {
 	return (

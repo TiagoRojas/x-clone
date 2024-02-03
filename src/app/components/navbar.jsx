@@ -1,4 +1,3 @@
-import {Link} from '@/navigation';
 import {IconBell, IconBookmark, IconBrandX, IconDotsCircleHorizontal, IconHome, IconMail, IconSearch, IconUser} from '@tabler/icons-react';
 import {DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger} from '@/components/ui/dropdown-menu';
 import {useTranslations} from 'next-intl';
@@ -9,8 +8,8 @@ import NavbarClient from './navbar-client';
 export default function Navbar({user}) {
 	const {user_handle, username, avatar_url} = user;
 	const t = useTranslations();
-	const iconClass = 'w-9 h-9 lg:mr-3';
 
+	const iconClass = 'w-9 h-9 lg:mr-3';
 	const navItemList = [
 		{title: '', url: '/', element: <IconBrandX className="w-10 h-10" />},
 		{title: t('home'), url: '/', element: <IconHome className={iconClass} />},
@@ -23,8 +22,10 @@ export default function Navbar({user}) {
 	];
 
 	return (
-		<header className="fixed top-0 h-full min-w-[72px] flex flex-col lg:justify-end ">
-			<NavbarClient items={navItemList} />
+		<header className="fixed top-0 h-full min-w-[72px] w-auto lg:w-[595px] flex lg:items-end flex-col">
+			<nav className="align-end lg:mr-8">
+				<NavbarClient items={navItemList} />
+			</nav>
 			{user_handle ? (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>

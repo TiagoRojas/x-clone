@@ -6,25 +6,27 @@ import {useRouter} from '@/navigation';
 import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
 import {useRef} from 'react';
 import {useForm} from 'react-hook-form';
-import revalidateHome from '../[locale]/actions';
 
 export default function ClientPostForm({placeholder, userInfo, submit}) {
 	const userImage = userInfo?.user?.user_metadata.avatar_url;
-	const router = useRouter();
 	const supabase = createClientComponentClient();
 	const form = useForm();
+	const router = useRouter();
+
 	async function onSubmit(e) {
+		if (!userImage) return;
 		if (!userInfo) return;
 		const content = e.content;
 		const {error} = await supabase.from('posts').insert({content, user_id: userInfo.user.id});
-		if (!error) revalidateHome();
+		if (!error) router.refresh();
 	}
 
-	const ref = useRef(null);
+	const textareaRef = useRef(null);
+	// This function dynamically changes the height of the textarea depending on how much the user wrote.
 	const handleInput = (e) => {
-		if (ref.current) {
-			ref.current.style.height = 'auto';
-			ref.current.style.height = `${e.target.scrollHeight}px`;
+		if (textareaRef.current) {
+			textareaRef.current.style.height = 'auto';
+			textareaRef.current.style.height = `${e.target.scrollHeight}px`;
 		}
 	};
 	return (
@@ -45,7 +47,7 @@ export default function ClientPostForm({placeholder, userInfo, submit}) {
 							<FormControl>
 								<textarea
 									{...field}
-									ref={ref}
+									ref={textareaRef}
 									rows={1}
 									maxLength={700}
 									minLength={1}

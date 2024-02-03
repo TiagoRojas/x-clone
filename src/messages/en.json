@@ -8,5 +8,7 @@
 	"options": "options",
 	"closeSession": "Close session on",
 	"onX": "on X",
-	"insertPost": "What is happening?!"
+	"insertPost": "What's happening?",
+	"reposted-by-me": "Reposted",
+	"reposted-by-user": ""
 }
