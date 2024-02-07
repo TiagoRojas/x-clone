@@ -8,7 +8,6 @@ import NavbarClient from './navbar-client';
 export default function Navbar({user}) {
 	const {user_handle, username, avatar_url} = user;
 	const t = useTranslations();
-
 	const iconClass = 'w-9 h-9 lg:mr-3';
 	const navItemList = [
 		{title: '', url: '/', element: <IconBrandX className="w-10 h-10" />},

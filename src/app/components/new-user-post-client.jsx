@@ -18,6 +18,7 @@ export default function ClientPostForm({placeholder, userInfo, submit}) {
 		if (!userInfo) return;
 		const content = e.content;
 		const {error} = await supabase.from('posts').insert({content, user_id: userInfo.user.id});
+		console.log(error);
 		if (!error) router.refresh();
 	}
 

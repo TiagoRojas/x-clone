@@ -27,11 +27,11 @@ export default function AuthButton({session, children}) {
 		await supabase.auth.signOut();
 		router.refresh();
 	};
-	return session === null ? (
+	return session == null ? (
 		<SelectLogin handleSignInWithGithub={handleSignInWithGithub} handleSignInWithGoogle={handleSignInWithGoogle} />
 	) : (
 		<button onClick={handleSignOut} className="mt-auto mb-2">
-			{children}
+			Cerrar sesion
 		</button>
 	);
 }

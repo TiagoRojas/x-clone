@@ -1,15 +1,16 @@
 import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
 import {cookies} from 'next/headers';
 import PostsClient from './posts-client';
+import {getTranslations} from 'next-intl/server';
 
 export default async function Posts() {
 	const cookiesStore = cookies();
 	const supabase = createServerComponentClient({cookies});
 	const {data: userInfo} = await supabase.auth.getUser();
-	const {data: posts, error} = await supabase
-		.from('posts')
-		.select('*, user:users(username, avatar_url, user_handle),likes(*), reposts(created_at), bookmarks(*), replies(*)')
-		.order('created_at', {ascending: false});
+	const {data: posts} = userInfo?.user?.id
+		? await supabase.rpc('get_posts_for_users', {userid: userInfo.user.id}).order('reposted_at', {ascending: false}).limit(10)
+		: await supabase.rpc('get_posts').order('created_at', {ascending: false}).limit(10);
 	const hasTheme = cookiesStore.has('theme');
-	return <PostsClient posts={posts} userInfo={userInfo} hasTheme={hasTheme} />;
+	const t = await getTranslations();
+	return <PostsClient posts={posts} userInfo={userInfo} hasTheme={hasTheme} repostedByMe={t('repostedByMe')} />;
 }

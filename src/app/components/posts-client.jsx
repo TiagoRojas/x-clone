@@ -7,7 +7,7 @@ import {setThemeCookie} from '@/lib/theme';
 import {useEffect} from 'react';
 import {IconRepeat} from '@tabler/icons-react';
 
-export default function PostsClient({posts, userInfo, hasTheme, repostedByMe, repostedByUser}) {
+export default function PostsClient({posts, userInfo, hasTheme, repostedByMe}) {
 	const router = useRouter();
 	const pushToPost = (e, id, author_handle) => {
 		const tagName = e.target.tagName;
@@ -32,7 +32,7 @@ export default function PostsClient({posts, userInfo, hasTheme, repostedByMe, re
 				onClick={(e) => pushToPost(e, post.id, post.user_handle)}
 			>
 				{post.is_reposted ? (
-					userInfo.id == post.reposted_by ? (
+					post.reposted_by_me ? (
 						<div className="flex items-center text-gray-100/60 text-sm ml-3 w-auto">
 							<IconRepeat className="w-5" />
 							<span className="ml-3">{repostedByMe}</span>
@@ -40,7 +40,7 @@ export default function PostsClient({posts, userInfo, hasTheme, repostedByMe, re
 					) : (
 						<div className="flex items-center text-gray-100/60 text-sm ml-3 w-auto">
 							<IconRepeat className="w-5" />
-							<span className="ml-3">{repostedByUser}</span>
+							<span className="ml-3">{post.reposted_by}</span>
 						</div>
 					)
 				) : null}
@@ -62,7 +62,7 @@ export default function PostsClient({posts, userInfo, hasTheme, repostedByMe, re
 							</div>
 							<p className="flex w-full items-center gap-4 max-h-[215px] max-w-[515px]">{post.content}</p>
 						</div>
-						<Buttons postInfo={post} userInfo={userInfo} />
+						<Buttons postInfo={post} userInfo={userInfo} repostedByMe={post.reposted_by_me} />
 					</div>
 				</div>
 			</article>
