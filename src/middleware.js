@@ -1,25 +1,21 @@
 import createMiddleware from 'next-intl/middleware';
 import {localePrefix, locales} from './navigation';
-import {NextResponse} from 'next/server';
-export default createMiddleware({
-	locales,
-	localePrefix,
-	defaultLocale: 'en'
-});
+import {createMiddlewareClient} from '@supabase/auth-helpers-nextjs';
 
-export async function Middleware({req}) {
-	const requestHeaders = new Headers(req.headers);
-	requestHeaders.set('x-url', req.nextUrl.url);
-	requestHeaders.set('x-url2', req.url);
-	requestHeaders.set('x-pathname', request.nextUrl.pathname);
-
-	return NextResponse.next({
-		request: {
-			headers: requestHeaders
-		}
+export default async function middleware(req) {
+	const handleI18nRouting = createMiddleware({
+		locales,
+		localePrefix,
+		defaultLocale: 'en'
 	});
+	const res = handleI18nRouting(req);
+
+	const supabase = createMiddlewareClient({req, res});
+	await supabase.auth.getSession();
+
+	return res;
 }
-// only applies this middleware to files in the app directory
+
 export const config = {
-	matcher: ['/((?!api|_next|.*\\..*).*)']
+	matcher: ['/((?!_next|.*\\..*).*)']
 };

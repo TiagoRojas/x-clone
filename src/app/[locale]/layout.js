@@ -4,6 +4,7 @@ import {cookies} from 'next/headers';
 import Navbar from '../components/navbar';
 import {getTheme} from '@/lib/theme';
 import {NextIntlClientProvider, useMessages} from 'next-intl';
+import {redirect} from 'next/navigation';
 
 export const metadata = {
 	title: 'Create Next App',
@@ -19,15 +20,17 @@ export default async function LocaleLayout({children, params: {locale}}) {
 		avatar_url: data?.user?.user_metadata.avatar_url
 	};
 	const theme = await getTheme();
-
 	return (
 		<html lang={locale} className={theme}>
 			<body>
 				<NextIntlClientProvider>
 					<main className="min-h-screen min-w-screen grid grid-flow-col grid-cols-3">
-						<div className="relative  hidden md:flex justify-end">
-							<Navbar user={userInfo} />
-						</div>
+						{data.user && (
+							<div className="relative  hidden md:flex justify-end">
+								<Navbar user={userInfo} />
+							</div>
+						)}
+
 						{children}
 					</main>
 				</NextIntlClientProvider>

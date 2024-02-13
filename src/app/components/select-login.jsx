@@ -6,7 +6,7 @@ export function SelectLogin({handleSignInWithGithub, handleSignInWithGoogle, mes
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
-				<Button variant="outline" className="mt-auto mb-4">
+				<Button variant="outline" className="mb-4">
 					{messages.loginBtn}
 				</Button>
 			</PopoverTrigger>

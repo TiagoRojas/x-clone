@@ -8,9 +8,8 @@ export default async function Posts() {
 	const locale = await getLocale();
 	const supabase = createServerComponentClient({cookies});
 	const {data: userInfo} = await supabase.auth.getUser();
-	const {data: posts} = userInfo?.user?.id
-		? await supabase.rpc('get_posts_for_users', {userid: userInfo.user.id}).order('reposted_at', {ascending: false}).limit(10)
-		: await supabase.rpc('get_posts').order('created_at', {ascending: false}).limit(10);
+	const {data: posts} = await supabase.rpc('get_posts_for_users', {userid: userInfo.user.id}).order('reposted_at', {ascending: false}).limit(10);
+
 	const hasTheme = cookiesStore.has('theme');
 	const t = await getTranslations();
 	return (
