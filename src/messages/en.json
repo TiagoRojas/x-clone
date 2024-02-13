@@ -10,5 +10,14 @@
 	"onX": "on X",
 	"insertPost": "What's happening?",
 	"repostedByMe": "Reposted",
-	"reposted-by-user": ""
+	"repostedByUser": "has reposted",
+	"follows": "follows",
+	"followers": "followers",
+	"joinedat": "Joined at",
+	"of": "",
+	"editProfile": "Edit profile",
+	"posts": "Posts",
+	"responses": "Responses",
+	"media": "Media",
+	"likes": "Likes"
 }

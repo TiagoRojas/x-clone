@@ -7,7 +7,7 @@ import {setThemeCookie} from '@/lib/theme';
 import {useEffect} from 'react';
 import {IconRepeat} from '@tabler/icons-react';
 
-export default function PostsClient({posts, userInfo, hasTheme, repostedByMe}) {
+export default function PostsClient({posts, userInfo, hasTheme, repostedByMe, repostedByUser}) {
 	const router = useRouter();
 	const pushToPost = (e, id, author_handle) => {
 		const tagName = e.target.tagName;
@@ -23,13 +23,17 @@ export default function PostsClient({posts, userInfo, hasTheme, repostedByMe}) {
 			setThemeCookie(preferredTheme);
 		}
 	}, []);
-
+	const pushToUser = (e, userhandle) => {
+		e.stopPropagation();
+		router.push(`/${userhandle}`);
+	};
+	// return <pre>{JSON.stringify(posts)}</pre>;
 	return posts.map((post, i) => {
 		return (
 			<article
 				className="lg:w-[600px] w-full flex flex-col border-b p-3 hover:cursor-pointer"
 				key={`${post.id} ${i}`}
-				onClick={(e) => pushToPost(e, post.id, post.user_handle)}
+				onClick={(e) => pushToPost(e, post.id, post.user.user_handle)}
 			>
 				{post.is_reposted ? (
 					post.reposted_by_me ? (
@@ -40,21 +44,23 @@ export default function PostsClient({posts, userInfo, hasTheme, repostedByMe}) {
 					) : (
 						<div className="flex items-center text-gray-100/60 text-sm ml-3 w-auto">
 							<IconRepeat className="w-5" />
-							<span className="ml-3">{post.reposted_by}</span>
+							<span className="ml-3">{`${post.reposted_by} ${repostedByUser}.`}</span>
 						</div>
 					)
 				) : null}
 				<div className="flex w-full">
-					<div href={`/${post.user_handle}`} className="flex w-auto h-max">
+					<div onClick={(e) => pushToUser(e, post.user.user_handle)} className="flex w-auto h-max">
 						<Avatar>
-							<AvatarImage src={post.avatar_url} alt={`@${post.user_handle}`} />
+							<AvatarImage src={post.user.avatar_url} alt={`@${post.user.user_handle}`} />
 						</Avatar>
 					</div>
 					<div className="flex flex-col">
 						<div className="ml-1">
 							<div>
-								<span className="text-lg hover:underline transition">{post.username}</span>
-								<span className="text-md mx-1 text-gray-400">@{post.user_handle}</span>
+								<span className="text-lg hover:underline transition" onClick={(e) => pushToUser(e, post.user.user_handle)}>
+									{post.user.username}
+								</span>
+								<span className="text-md mx-1 text-gray-400">@{post.user.user_handle}</span>
 								<span className="text-md text-gray-400">
 									<i className="mr-1">&bull;</i>
 									{moment(post.created_at).fromNow()}

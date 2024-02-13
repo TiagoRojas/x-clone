@@ -10,5 +10,14 @@
 	"onX": "en X",
 	"insertPost": "¡¿Qué está pasando?!",
 	"repostedByMe": "Reposteaste",
-	"reposted-by-user": ""
+	"repostedByUser": "ha reposteado",
+	"follows": "Siguiendo",
+	"followers": "Seguidores",
+	"joinedat": "Se unió en",
+	"of": "de",
+	"editProfile": "Editar perfil",
+	"posts": "Posts",
+	"responses": "Respuestas",
+	"media": "Fotos y videos",
+	"likes": "Me gusta"
 }
