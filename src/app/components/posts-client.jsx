@@ -6,8 +6,10 @@ import {useRouter} from '@/navigation';
 import {setThemeCookie} from '@/lib/theme';
 import {useEffect} from 'react';
 import {IconRepeat} from '@tabler/icons-react';
+import 'moment/locale/es';
 
-export default function PostsClient({posts, userInfo, hasTheme, repostedByMe, repostedByUser}) {
+export default function PostsClient({posts, userInfo, hasTheme, repostedByMe, repostedByUser, locale}) {
+	moment.locale(locale);
 	const router = useRouter();
 	const pushToPost = (e, id, author_handle) => {
 		const tagName = e.target.tagName;
