@@ -12,5 +12,5 @@ export default async function Posts() {
 		: await supabase.rpc('get_posts').order('created_at', {ascending: false}).limit(10);
 	const hasTheme = cookiesStore.has('theme');
 	const t = await getTranslations();
-	return <PostsClient posts={posts} userInfo={userInfo} hasTheme={hasTheme} repostedByMe={t('repostedByMe')} />;
+	return <PostsClient posts={posts} userInfo={userInfo} hasTheme={hasTheme} repostedByMe={t('repostedByMe')} repostedByUser={t('repostedByUser')} />;
 }

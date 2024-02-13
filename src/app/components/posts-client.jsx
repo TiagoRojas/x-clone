@@ -36,7 +36,7 @@ export default function PostsClient({posts, userInfo, hasTheme, repostedByMe, re
 				onClick={(e) => pushToPost(e, post.id, post.user.user_handle)}
 			>
 				{post.is_reposted ? (
-					post.reposted_by_me ? (
+					post.user_id === userInfo.id ? (
 						<div className="flex items-center text-gray-100/60 text-sm ml-3 w-auto">
 							<IconRepeat className="w-5" />
 							<span className="ml-3">{repostedByMe}</span>
