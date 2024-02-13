@@ -8,22 +8,20 @@ export default function Buttons({postInfo, userInfo, repostedByMe}) {
 	const supabase = createClientComponentClient();
 
 	const updateDb = async (db) => {
-		console.log(userInfo);
 		if (id == null) {
-			console.log('not logged');
+			window.alert('no iniciaste sesion');
 			return;
 		}
 		const {data} = await supabase.from(db).select('*').eq('post_id', postInfo.id);
 		const isAlreadyOnDB = data.find((item) => item.user_id == id);
-		console.log(isAlreadyOnDB);
+
 		if (isAlreadyOnDB) {
 			await supabase.from(db).delete().eq('post_id', postInfo.id).eq('user_id', id);
 		} else {
 			const a = await supabase.from(db).insert({user_id: id, post_id: postInfo.id}).eq('post_id', postInfo.id);
-			console.log(a);
 		}
 	};
-	console.log(postInfo);
+
 	return (
 		<div className="flex justify-between w-full">
 			<Button variant="faded" className="group-hover:bg-blue-400/20 hover:text-blue-600 p-2 rounded-full" onClick={() => null}>

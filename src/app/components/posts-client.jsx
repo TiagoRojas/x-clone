@@ -27,7 +27,6 @@ export default function PostsClient({posts, userInfo, hasTheme, repostedByMe, re
 		e.stopPropagation();
 		router.push(`/${userhandle}`);
 	};
-	// return <pre>{JSON.stringify(posts)}</pre>;
 	return posts.map((post, i) => {
 		return (
 			<article

@@ -7,6 +7,7 @@
 	"profile": "profile",
 	"options": "options",
 	"closeSession": "Close session on",
+	"loginBtn": "Log In",
 	"onX": "on X",
 	"insertPost": "What's happening?",
 	"repostedByMe": "Reposted",
@@ -19,5 +20,8 @@
 	"posts": "Posts",
 	"responses": "Responses",
 	"media": "Media",
-	"likes": "Likes"
+	"likes": "Likes",
+	"signInWithGoogle": "Login with Google",
+	"signInWithGithub": "Login with Github",
+	"submitBtn": "Post"
 }

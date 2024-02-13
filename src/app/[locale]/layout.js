@@ -3,7 +3,7 @@ import '../globals.css';
 import {cookies} from 'next/headers';
 import Navbar from '../components/navbar';
 import {getTheme} from '@/lib/theme';
-import {NextIntlClientProvider} from 'next-intl';
+import {NextIntlClientProvider, useMessages} from 'next-intl';
 
 export const metadata = {
 	title: 'Create Next App',
@@ -18,7 +18,6 @@ export default async function LocaleLayout({children, params: {locale}}) {
 		username: data?.user?.user_metadata.name || data?.user?.user_metadata.full_name,
 		avatar_url: data?.user?.user_metadata.avatar_url
 	};
-	console.log(data);
 	const theme = await getTheme();
 
 	return (

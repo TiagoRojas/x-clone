@@ -4,7 +4,7 @@ import {useRouter} from 'next/navigation';
 import React from 'react';
 import {SelectLogin} from './select-login';
 
-export default function AuthButton({session, children}) {
+export default function AuthButton({session, children, messages}) {
 	const supabase = createClientComponentClient();
 	const router = useRouter();
 	const handleSignInWithGithub = async () => {
@@ -28,10 +28,10 @@ export default function AuthButton({session, children}) {
 		router.refresh();
 	};
 	return session == null ? (
-		<SelectLogin handleSignInWithGithub={handleSignInWithGithub} handleSignInWithGoogle={handleSignInWithGoogle} />
+		<SelectLogin handleSignInWithGithub={handleSignInWithGithub} handleSignInWithGoogle={handleSignInWithGoogle} messages={messages} />
 	) : (
 		<button onClick={handleSignOut} className="mt-auto mb-2">
-			Cerrar sesion
+			{children}
 		</button>
 	);
 }

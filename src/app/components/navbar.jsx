@@ -16,14 +16,14 @@ export default function Navbar({user}) {
 		{title: t('notifications'), url: '/notifications', element: <IconBell className={iconClass} />},
 		{title: t('messages'), url: '/messages', element: <IconMail className={iconClass} />},
 		{title: t('bookmarks'), url: '/bookmarks', element: <IconBookmark className={iconClass} />},
-		{title: t('profile'), url: `/${user_handle}`, element: <IconUser className={iconClass} />},
+		{title: t('profile'), url: `/${user_handle || ''}`, element: <IconUser className={iconClass} />},
 		{title: t('options'), url: '/options', element: <IconDotsCircleHorizontal className={iconClass} />}
 	];
 
 	return (
 		<header className="fixed top-0 h-full min-w-[72px] w-auto lg:w-[595px] flex lg:items-end flex-col">
 			<nav className="align-end lg:mr-8">
-				<NavbarClient items={navItemList} />
+				<NavbarClient items={navItemList} userhandle={user_handle} />
 			</nav>
 			{user_handle ? (
 				<DropdownMenu>
