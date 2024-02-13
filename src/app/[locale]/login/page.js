@@ -8,9 +8,7 @@ export default async function page() {
 	const supabase = createServerComponentClient({cookies});
 	const {data} = await supabase.auth.getSession();
 	if (data.session) {
-		console.log('a');
-	} else {
-		console.log('b');
+		redirect('/');
 	}
 	const t = await getTranslations();
 	const messages = {

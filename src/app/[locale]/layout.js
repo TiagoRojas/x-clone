@@ -27,7 +27,6 @@ export default async function LocaleLayout({children, params: {locale}}) {
 								<Navbar user={userInfo} />
 							</div>
 						)}
-
 						{children}
 					</main>
 				</NextIntlClientProvider>
