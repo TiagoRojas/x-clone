@@ -14,11 +14,8 @@ export const metadata = {
 export default async function LocaleLayout({children, params: {locale}}) {
 	const supabase = createServerComponentClient({cookies});
 	const {data} = await supabase.auth.getUser();
-	const userInfo = {
-		user_handle: data?.user?.user_metadata.user_name || data?.user?.user_metadata.full_name,
-		username: data?.user?.user_metadata.name || data?.user?.user_metadata.full_name,
-		avatar_url: data?.user?.user_metadata.avatar_url
-	};
+	const {data: fetchedUser} = await supabase.from('users').select('*').eq('id', data.user.id);
+	const userInfo = fetchedUser[0];
 	const theme = await getTheme();
 	return (
 		<html lang={locale} className={theme}>
