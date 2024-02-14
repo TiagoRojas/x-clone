@@ -1,3 +1,4 @@
+'use server';
 import PostsClient from '@/app/components/posts-client';
 import {Avatar, AvatarImage} from '@/components/ui/avatar';
 import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
@@ -8,15 +9,24 @@ import Image from 'next/image';
 import {redirect} from 'next/navigation';
 import 'moment/locale/es';
 
+export async function generateMetadata({params}) {
+	return {
+		title: `${params.user} / X`
+	};
+}
+
 export default async function User({params}) {
 	const {user: user_handle, locale} = params;
 	if (!user_handle) redirect('/');
 	const cookiesStore = cookies();
 	const supabase = createServerComponentClient({cookies});
+
 	const {data: loggedUser} = await supabase.auth.getUser();
 	const {data, error} = await supabase.rpc('get_user', {userhandle: user_handle});
 	const user = data[0];
+
 	const t = await getTranslations();
+
 	const hasTheme = cookiesStore.has('theme');
 	const {data: posts, error: errorPosts} = await supabase.rpc('get_posts_for_user', {userid: user.id});
 	return (
@@ -53,7 +63,7 @@ export default async function User({params}) {
 				<div className="flex justify-between mx-4">
 					<h4 className="text-xl cursor-default w-max ml-2 border-sky-500 border-b-4 rounded">{t('posts')}</h4>
 					<h4 className="text-xl cursor-default w-max ml-2 text-gray-100/50">{t('responses')}</h4>
-					<h4 className="text-xl cursor-default w-max ml-2 text-gray-100/50">{t('picsandvids')}</h4>
+					<h4 className="text-xl cursor-default w-max ml-2 text-gray-100/50">{t('media')}</h4>
 					<h4 className="text-xl cursor-default w-max ml-2 text-gray-100/50">{t('likes')}</h4>
 				</div>
 			</section>

@@ -5,9 +5,6 @@ export function cn(...inputs) {
 	return twMerge(clsx(inputs));
 }
 
-export async function generateMetadata(params) {
-	console.log(params);
-	return {
-		title: '...'
-	};
-}
+// export async function generateMetadata(params) {
+// 	console.log(params);
+// }

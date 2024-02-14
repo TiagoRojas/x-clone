@@ -1,6 +1,7 @@
 import createMiddleware from 'next-intl/middleware';
 import {localePrefix, locales} from './navigation';
 import {createMiddlewareClient} from '@supabase/auth-helpers-nextjs';
+import {NextResponse} from 'next/server';
 
 export default async function middleware(req) {
 	const handleI18nRouting = createMiddleware({
@@ -9,10 +10,11 @@ export default async function middleware(req) {
 		defaultLocale: 'en'
 	});
 	const res = handleI18nRouting(req);
-
 	const supabase = createMiddlewareClient({req, res});
-	await supabase.auth.getSession();
-
+	const {data} = await supabase.auth.getSession();
+	if (data.session) {
+		NextResponse.redirect(new URL('login', 'http://localhost:3000/'));
+	}
 	return res;
 }
 

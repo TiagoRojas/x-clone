@@ -3,11 +3,14 @@ import NewUserPost from '../components/new-user-post';
 import Posts from '../components/posts';
 import {cookies} from 'next/headers';
 import {redirect} from '@/navigation';
+import {getTranslations} from 'next-intl/server';
 
-export const metadata = {
-	title: `Home / X`
-};
-
+export async function generateMetadata() {
+	const t = await getTranslations();
+	return {
+		title: `${t('home')} / X`
+	};
+}
 export default async function Home() {
 	const supabase = createServerComponentClient({cookies});
 	const {data} = await supabase.auth.getSession();

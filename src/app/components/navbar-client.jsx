@@ -1,17 +1,28 @@
-'use client';
-import {Link} from '@/navigation';
-import {usePathname} from 'next/navigation';
-
-export default function NavbarClient({items, userhandle}) {
-	const pathname = usePathname();
-	const linkClass =
-		'flex lg:items-center capitalize lg:w-max text-2xl lg:p-[12px] p-[5px] my-[2px] light:hover:bg-gray-300 hover:bg-white/10 rounded-full duration-50 transition';
-	const extraClass = 'lg:pr-[20px]';
-	const textClass = 'lg:inline hidden';
-	return items.map((item, i) => (
-		<Link href={item.url} key={item.title} className={`${linkClass} ${i > 0 && extraClass} ${pathname == userhandle && 'font-bold'}`}>
-			{item.element}
-			<span className={textClass}>{item.title}</span>
-		</Link>
-	));
+import {DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger} from '@/components/ui/dropdown-menu';
+import {Avatar, AvatarImage} from '@/components/ui/avatar';
+import AuthButtonServer from './auth-button';
+import {useTranslations} from 'next-intl';
+export default function NavbarClient({user}) {
+	const {user_handle, username, avatar_url} = user;
+	const t = useTranslations();
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<div className="flex items-center lg:w-[250px] mt-auto mb-4 mr-2 lg:p-[12px] p-[4px] light:hover:bg-gray-300 rounded-full duration-50 transition hover:bg-white/10">
+					<Avatar>
+						<AvatarImage src={avatar_url} alt={`@${username}`} />
+					</Avatar>
+					<span className="place-self-end lg:flex flex-col ml-2 hidden">
+						{username}
+						<i className="not-italic text-xs">@{user_handle}</i>
+					</span>
+				</div>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent>
+				<DropdownMenuLabel>
+					<AuthButtonServer>{`${t('closeSession')} @${user_handle}`}</AuthButtonServer>
+				</DropdownMenuLabel>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	);
 }
