@@ -15,7 +15,6 @@ export default async function Posts() {
 	const t = await getTranslations();
 	return (
 		<div id="posts">
-			{/* <pre>{JSON.stringify(initialPosts, null, 2)}</pre> */}
 			<PostsClient
 				initialPosts={initialPosts}
 				userInfo={userInfo}
