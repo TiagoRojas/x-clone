@@ -9,16 +9,14 @@ import {useForm} from 'react-hook-form';
 
 export default function ClientPostForm({placeholder, userInfo, submit}) {
 	const userImage = userInfo?.user?.user_metadata.avatar_url;
-	const supabase = createClientComponentClient();
 	const form = useForm();
 	const router = useRouter();
-
+	const supabase = createClientComponentClient();
 	async function onSubmit(e) {
 		if (!userImage) return;
 		if (!userInfo) return;
 		const content = e.content;
 		const {error} = await supabase.from('posts').insert({content, user_id: userInfo.user.id});
-		console.log(error);
 		if (!error) router.refresh();
 	}
 

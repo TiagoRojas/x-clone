@@ -2,10 +2,15 @@
 import {Button} from '@/components/ui/button';
 import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
 import {IconBookmark, IconHeart, IconRepeat, IconUpload, IconMessageCircle} from '@tabler/icons-react';
+import {useState} from 'react';
 
-export default function Buttons({postInfo, userInfo, repostedByMe}) {
+export default function Buttons({postInfo, userInfo, repostedByMe, i, parentIndex}) {
 	const id = userInfo?.user?.id || null;
 	const supabase = createClientComponentClient();
+
+	const [likesCount, setLikesCount] = useState(postInfo.likes_count);
+
+	const [repostCount, setRepostCount] = useState(postInfo.repost_count);
 
 	const updateDb = async (db) => {
 		if (id == null) {
@@ -16,9 +21,34 @@ export default function Buttons({postInfo, userInfo, repostedByMe}) {
 		const isAlreadyOnDB = data.find((item) => item.user_id == id);
 
 		if (isAlreadyOnDB) {
-			await supabase.from(db).delete().eq('post_id', postInfo.id).eq('user_id', id);
+			const {error} = await supabase.from(db).delete().eq('post_id', postInfo.id).eq('user_id', id);
+			if (!error) {
+				switch (db) {
+					case 'likes':
+						const repostBtn = document.getElementById(`repostsBtn${parentIndex}`);
+						repostBtn.classList.add('text-green-600');
+					case 'reposts':
+						if (repostedByMe) {
+							const repost = document.getElementById(postInfo.id);
+							const parentReposts = document.getElementById(`reposts${parentIndex}`);
+							const parentRepostsBtn = document.getElementById(`repostsBtn${parentIndex}`);
+							const totalReposts = parseInt(parentReposts.textContent);
+							if (totalReposts - 1 == 0) parentReposts.innerHTML = '';
+							else parentReposts.innerHTML = totalReposts - 1;
+							parentRepostsBtn.classList.remove('text-green-600');
+							repost.remove();
+						}
+				}
+			}
 		} else {
-			const a = await supabase.from(db).insert({user_id: id, post_id: postInfo.id}).eq('post_id', postInfo.id);
+			const {error} = await supabase.from(db).insert({user_id: id, post_id: postInfo.id}).eq('post_id', postInfo.id);
+			if (!error) {
+				switch (db) {
+					case 'likes':
+						setLikesCount((prev) => prev + 1);
+					case 'reposts':
+				}
+			}
 		}
 	};
 
@@ -32,14 +62,17 @@ export default function Buttons({postInfo, userInfo, repostedByMe}) {
 				variant="faded"
 				className={`${repostedByMe ? `group-hover:bg-green-400/20 text-green-600` : `group-hover:bg-green-400/20 hover:text-green-600`} p-2 rounded-full`}
 				onClick={() => updateDb('reposts')}
+				id={`repostsBtn${i}`}
 			>
 				<IconRepeat />
-				<span className="group">{postInfo.repost_count > 0 && postInfo.repost_count}</span>
+				<span className="group" id={`reposts${i}`}>
+					{repostCount > 0 && repostCount}
+				</span>
 			</Button>
-			<Button variant="faded" className="px-2 group-hover:bg-red-400/20 hover:text-red-600 rounded-full" onClick={() => updateDb('likes')}>
+			<Button variant="faded" className="px-2 group-hover:bg-red-400/20 hover:text-red-600 rounded-full" onClick={(e) => updateDb('likes')}>
 				<IconHeart />
+				<span id={`likes${i}`}>{likesCount > 0 && likesCount}</span>
 			</Button>
-			{/* <span>{postInfo.likes.length > 0 && postInfo.likes.length}</span> */}
 			<section>
 				<Button variant="faded" className="group-hover:bg-blue-400/20 rounded-full place-self-end p-2" onClick={() => updateDb('likes')}>
 					<IconBookmark />

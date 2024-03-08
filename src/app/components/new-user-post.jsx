@@ -3,6 +3,7 @@ import {cookies} from 'next/headers';
 import {getTranslations} from 'next-intl/server';
 import ClientPostForm from './new-user-post-client';
 import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
+import {revalidatePath} from 'next/cache';
 export default async function NewUserPost() {
 	const t = await getTranslations();
 	const supabase = createServerComponentClient({cookies});
