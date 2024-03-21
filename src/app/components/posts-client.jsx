@@ -4,13 +4,14 @@ import moment from 'moment';
 import Buttons from './posts-buttons';
 import {useRouter} from '@/navigation';
 import {setThemeCookie} from '@/lib/theme';
-import {useEffect, useState} from 'react';
+import {createRef, useEffect, useRef, useState} from 'react';
 import {IconRepeat} from '@tabler/icons-react';
 import 'moment/locale/es';
 import {useInView} from 'react-intersection-observer';
 import {getPosts} from '@/actions';
+import {PostOptions} from './post-options';
 
-export default function PostsClient({initialPosts, userInfo, hasTheme, repostedByMe, repostedByUser, locale}) {
+export default function PostsClient({initialPosts, userInfo, hasTheme, repostedByMe, repostedByUser, locale, translations}) {
 	moment.locale(locale);
 	const [posts, setPosts] = useState(initialPosts);
 	const [currentOffset, setCurrentOffset] = useState(10);
@@ -67,47 +68,50 @@ export default function PostsClient({initialPosts, userInfo, hasTheme, repostedB
 					}
 					return (
 						<article
-							className="lg:w-[600px] w-full flex flex-col border-b p-3 hover:cursor-pointer"
+							className="lg:w-[600px] w-full flex justify-between border-b p-3 hover:cursor-pointer group/options"
 							key={`${post.id} ${i}`}
 							onClick={(e) => pushToPost(e, post.id, post.user.user_handle)}
 							id={`${post.id}`}
 						>
-							{post.is_reposted ? (
-								post.reposted_by_me ? (
-									<div className="flex items-center text-gray-100/60 text-sm ml-3 w-auto">
-										<IconRepeat className="w-5" />
-										<span className="ml-3">{repostedByMe}</span>
-									</div>
-								) : (
-									<div className="flex items-center text-gray-100/60 text-sm ml-3 w-auto">
-										<IconRepeat className="w-5" />
-										<span className="ml-3">{`${post.reposted_by} ${repostedByUser}.`}</span>
-									</div>
-								)
-							) : null}
-							<div className="flex w-full">
-								<div onClick={(e) => pushToUser(e, post.user.user_handle)} className="flex w-auto h-max">
-									<Avatar>
-										<AvatarImage src={post.user.avatar_url} alt={`@${post.user.user_handle}`} />
-									</Avatar>
-								</div>
-								<div className="flex flex-col">
-									<div className="ml-1">
-										<div>
-											<span className="text-lg hover:underline transition" onClick={(e) => pushToUser(e, post.user.user_handle)}>
-												{post.user.username}
-											</span>
-											<span className="text-md mx-1 text-gray-400">@{post.user.user_handle}</span>
-											<span className="text-md text-gray-400">
-												<i className="mr-1">&bull;</i>
-												{moment(post.created_at).fromNow()}
-											</span>
+							<div>
+								{post.is_reposted ? (
+									post.reposted_by_me ? (
+										<div className="flex items-center text-gray-100/60 text-sm ml-3 w-auto">
+											<IconRepeat className="w-5" />
+											<span className="ml-3">{repostedByMe}</span>
 										</div>
-										<p className="flex w-full items-center gap-4 max-h-[215px] max-w-[515px]">{post.content}</p>
+									) : (
+										<div className="flex items-center text-gray-100/60 text-sm ml-3 w-auto">
+											<IconRepeat className="w-5" />
+											<span className="ml-3">{`${post.reposted_by} ${repostedByUser}.`}</span>
+										</div>
+									)
+								) : null}
+								<div className="flex w-full">
+									<div onClick={(e) => pushToUser(e, post.user.user_handle)} className="flex w-auto h-max">
+										<Avatar>
+											<AvatarImage src={post.user.avatar_url} alt={`@${post.user.user_handle}`} />
+										</Avatar>
 									</div>
-									<Buttons postInfo={post} userInfo={userInfo} repostedByMe={post.reposted_by_me} parentIndex={parentPost} i={i} />
+									<div className="flex flex-col">
+										<div className="ml-1">
+											<div>
+												<span className="text-lg hover:underline transition" onClick={(e) => pushToUser(e, post.user.user_handle)}>
+													{post.user.username}
+												</span>
+												<span className="text-md mx-1 text-gray-400">@{post.user.user_handle}</span>
+												<span className="text-md text-gray-400">
+													<i className="mr-1">&bull;</i>
+													{moment(post.created_at).fromNow()}
+												</span>
+											</div>
+											<p className="flex w-full items-center gap-4 max-h-[215px] max-w-[515px]">{post.content}</p>
+										</div>
+										<Buttons postInfo={post} userInfo={userInfo} repostedByMe={post.reposted_by_me} parentIndex={parentPost} i={i} />
+									</div>
 								</div>
 							</div>
+							<PostOptions extraclass="opacity-0 group-hover/options:opacity-100" post={post} userid={userInfo.user.id} translations={translations} />
 						</article>
 					);
 				})}

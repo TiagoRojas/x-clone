@@ -23,5 +23,10 @@
 	"likes": "Me gusta",
 	"signInWithGoogle": "Iniciar sesion con Google",
 	"signInWithGithub": "Iniciar sesion con Github",
-	"submitBtn": "Postear"
+	"submitBtn": "Postear",
+	"post": {
+		"delete": "Eliminar",
+		"pin": "Fijar",
+		"edit": "Editar"
+	}
 }

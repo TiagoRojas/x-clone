@@ -23,5 +23,10 @@
 	"likes": "Likes",
 	"signInWithGoogle": "Login with Google",
 	"signInWithGithub": "Login with Github",
-	"submitBtn": "Post"
+	"submitBtn": "Post",
+	"post": {
+		"delete": "Delete",
+		"pin": "Pin",
+		"edit": "Edit"
+	}
 }

@@ -10,9 +10,9 @@ export default async function Posts() {
 	const supabase = createServerComponentClient({cookies});
 	const {data: userInfo} = await supabase.auth.getUser();
 	const initialPosts = await getPosts({userid: userInfo.user.id});
-
 	const hasTheme = cookiesStore.has('theme');
 	const t = await getTranslations();
+	const translations = {delete: t('post.delete'), pin: t('post.pin'), edit: t('post.edit')};
 	return (
 		<div id="posts">
 			<PostsClient
@@ -22,6 +22,7 @@ export default async function Posts() {
 				repostedByMe={t('repostedByMe')}
 				repostedByUser={t('repostedByUser')}
 				locale={locale}
+				translations={translations}
 			/>
 		</div>
 	);
